@@ -1,35 +1,38 @@
-let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Color", "Size", "Price", null,];
+let arr = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, "Color", "Size", "Price", null, NaN];
 console.log(arr);
 console.log(`Количество элементов в массиве: ${arr.length}`);
  
-let even = 0;
-let odd = 0;
-let nullEl = 0;
- 
-function arrInfo() {
- 
-for(i = 0; i < arr.length; i++)
-{
-if(typeof(arr[i])== "number" )
-    {
-  
-  if (arr[i]%2 == 0) 
-    
-  {if(arr[i] ==0){nullEl=++nullEl}
-   else {even =++even}}
-  else 
-  {odd=++odd}
+function arrInfo(arr) {
+  let even = 0;
+  let odd = 0;
+  let nullEl = 0;
+  for(i = 0; i < arr.length; i++)
+  {
+  if(typeof(arr[i])== "number" && !isNaN(arr[i])) {
+    // Здесь в условиях путаница, исправила на более оптимальный и читабельный вариант
+    if (arr[i] === 0) {
+      nullEl++;
+    } else if (arr[i] % 2 === 0) {
+      even++;
+    } else {
+      odd++;
     }
-else
-{}
- 
+  }
+  }
+  console.log(`Количество чётных чисел: ${even}`)
+  console.log(`Количество нечётных чисел: ${odd}`)
+  console.log(`Количество нулевых элементов: ${nullEl}`)
+  
+  let text = arr.length - (even + odd + nullEl);
+  
+  console.log(`Количество нечисловых элементов: ${text}`);
 }
-console.log(`Количество чётных чисел: ${even}`)
-console.log(`Количество нечётных чисел: ${odd}`)
-console.log(`Количество нулевых элементов: ${nullEl}`)
- 
-let text = arr.length - (even + odd + nullEl);
- 
-console.log(`Количество нечисловых элементов: ${text}`);
-}
-arrInfo()
+
+arrInfo(arr);
+
+// В решении есть несколько недочетов:
+// 1. Не учтены значения NaN. Они тоже имеют тип number, поэтому пройдут проверку на typeof и будут ошибочно причислены к нечетным значениям.
+// 2. Массив нужно передавать в функцию в качестве аргумента, иначе теряется основная выгода использования функций - переиспользование кода и универсальность. Сейчас вашу функцию нельзя использовать с другим массивом, не меняя её код.
+// 3. Переменные-счетчики (even, odd, nullEl) должны быть частью функции, иначе при повторном её использовании их значения не сбросятся на 0 и подсчёт будет неверным
+// 4. 
+// Всё перечисленное исправила
